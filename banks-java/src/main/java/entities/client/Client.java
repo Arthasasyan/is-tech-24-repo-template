@@ -1,16 +1,16 @@
-package Entities;
+package entities.client;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Client {
     private boolean isFishy;
-    private int passportId;
+    private long passportId;
     private String name;
     private boolean notifications;
     private String address;
     private ArrayList<String> notificationsHistory;
 
-    public Client(String name, boolean notifications, String address, int passportId)
+    public Client(String name, boolean notifications, String address, long passportId)
     {
         this.name = name;
         this.notifications = notifications;
@@ -21,7 +21,7 @@ public class Client {
         isFishy = true;
     }
 
-    public int getPassportId() {
+    public long getPassportId() {
         return passportId;
     }
 

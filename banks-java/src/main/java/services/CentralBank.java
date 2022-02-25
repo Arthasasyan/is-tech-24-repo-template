@@ -1,8 +1,8 @@
-package Services;
-import Entities.BankLimit;
-import Entities.BalanceInterest;
-import Entities.BankCommission;
-import Tools.BanksException;
+package services;
+import entities.BankLimit;
+import entities.BalanceInterest;
+import entities.BankCommission;
+import tools.BanksException;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public class CentralBank
 
     public CentralBank()
     {
-        ArrayList<SimpleBank> SystemBanks = new ArrayList<SimpleBank>();
+        systemBanks = new ArrayList<SimpleBank>();
     }
 
 
@@ -40,18 +40,18 @@ public class CentralBank
         return bank;
     }
 
-    public void RunTimeMachine(int dayNumber) throws BanksException {
+    public void runTimeMachine(int dayNumber) throws BanksException {
         for (int i = 0; i < dayNumber; i++)
         {
-            for (SimpleBank bank : systemBanks) bank.AddAccountInterests();
+            for (SimpleBank bank : systemBanks) bank.addAccountInterests();
             if (i % BankLimit != 0) continue;
             {
-                for (SimpleBank bank : systemBanks) bank.AddAccountInterestOnAccount();
+                for (SimpleBank bank : systemBanks) bank.addAccountInterestOnAccount();
             }
         }
     }
 
-    public SimpleBank FindBankByName(String bankName)
+    public SimpleBank findBankByName(String bankName)
     {
         for (SimpleBank bank : systemBanks)
         {

@@ -1,6 +1,7 @@
-package Entities.BankAccount;
-import Entities.*;
-import Tools.BanksException;
+package entities.bank_account;
+import entities.*;
+import entities.client.Client;
+import tools.BanksException;
 
 public class CreditAccountImpl extends BaseBankAccountImpl {
     public CreditAccountImpl(
@@ -14,16 +15,16 @@ public class CreditAccountImpl extends BaseBankAccountImpl {
     }
 
     @Override
-    public Transaction AddMoneyToAccount(float money) throws BanksException {
-        return money < 0 ? super.AddMoneyToAccount(money - (this.getCommission().getCommissionValue() * money)) : super.AddMoneyToAccount(money);
+    public Transaction addMoneyToAccount(float money) throws BanksException {
+        return money < 0 ? super.addMoneyToAccount(money - (this.getCommission().getCommissionValue() * money)) : super.addMoneyToAccount(money);
     }
 
     @Override
-    public  Transaction GetMoneyFromAccount(float money) throws BanksException
+    public  Transaction getMoneyFromAccount(float money) throws BanksException
     {
         if (this.getMoney() < 0 && this.getMoney() - money > -this.getLimit().getLimitValue())
         {
-            return super.AddMoneyToAccount(money - (this.getLimit().getLimitValue() * money));
+            return super.addMoneyToAccount(money - (this.getLimit().getLimitValue() * money));
         }
         else if (this.getMoney() - money <= -this.getLimit().getLimitValue())
         {
@@ -31,7 +32,7 @@ public class CreditAccountImpl extends BaseBankAccountImpl {
         }
         else
         {
-            return super.GetMoneyFromAccount(money);
+            return super.getMoneyFromAccount(money);
         }
     }
 }

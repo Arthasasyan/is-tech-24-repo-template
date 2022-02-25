@@ -1,7 +1,8 @@
-package Entities.BankAccount;
+package entities.bank_account;
 
-import Entities.*;
-import Tools.BanksException;
+import entities.*;
+import entities.client.Client;
+import tools.BanksException;
 
 import java.time.LocalDate;
 
@@ -32,26 +33,26 @@ private LocalDate durationEnd;
     }
 
     @Override
-    public Transaction AddMoneyToAccount(float money) throws BanksException {
+    public Transaction addMoneyToAccount(float money) throws BanksException {
         if (this.getDurationEnd().isAfter(this.getCreationTime()))
         {
         throw new BanksException("Your deposit account duration is not end.");
         }
         else
         {
-        return super.AddMoneyToAccount(money);
+        return super.addMoneyToAccount(money);
         }
     }
 
     @Override
-    public Transaction GetMoneyFromAccount(float money) throws BanksException {
+    public Transaction getMoneyFromAccount(float money) throws BanksException {
         if (this.getDurationEnd().isAfter(this.getCreationTime()))
         {
         throw new BanksException("Your deposit account duration is not end.");
         }
         else
         {
-        return super.GetMoneyFromAccount(money);
+        return super.getMoneyFromAccount(money);
         }
     }
 }

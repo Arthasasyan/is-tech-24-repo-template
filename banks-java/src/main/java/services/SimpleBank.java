@@ -1,11 +1,11 @@
-package Services;
+package services;
 
-import Entities.BalanceInterest;
-import Entities.BankAccount.*;
-import Entities.BankCommission;
-import Entities.BankLimit;
-import Entities.Client;
-import Tools.BanksException;
+import entities.BalanceInterest;
+import entities.bank_account.*;
+import entities.BankCommission;
+import entities.BankLimit;
+import entities.client.Client;
+import tools.BanksException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class SimpleBank
             String bankName,
             BalanceInterest bankBalanceInterest,
             BalanceInterest bankDepositBalanceInterest,
-            Entities.BankCommission bankCommission,
+            entities.BankCommission bankCommission,
             BankLimit bankLimit,
             BankLimit creditLimit,
             int depositAccountDuration)
@@ -126,14 +126,14 @@ public class SimpleBank
         this._lastAccountId = _lastAccountId;
     }
 
-    public void TransferMoney(int firstAccountId, int secondAccountId, float value) throws BanksException {
-        BaseBankAccountImpl firstAccount = FindAccountById(firstAccountId);
-        BaseBankAccountImpl secondAccount = FindAccountById(secondAccountId);
-        firstAccount.GetMoneyFromAccount(value);
-        secondAccount.AddMoneyToAccount(value);
+    public void transferMoney(int firstAccountId, int secondAccountId, float value) throws BanksException {
+        BaseBankAccountImpl firstAccount = findAccountById(firstAccountId);
+        BaseBankAccountImpl secondAccount = findAccountById(secondAccountId);
+        firstAccount.getMoneyFromAccount(value);
+        secondAccount.addMoneyToAccount(value);
     }
 
-    public void SendNotificationsForClients(String message)
+    public void sendNotificationsForClients(String message)
     {
         ArrayList<Client> clients = new ArrayList<>();
         for (Client client : bankClients)
@@ -149,70 +149,69 @@ public class SimpleBank
         }
     }
 
-    public void ChangeBalanceInterest(float value)
+    public void changeBalanceInterest(float value)
     {
         this.bankBalanceInterest.setInterestValue(value);
-        SendNotificationsForClients("Now we have new balance interest!");
+        sendNotificationsForClients("Now we have new balance interest!");
     }
 
-    public void ChangeDepositBalanceInterest(float value)
+    public void changeDepositBalanceInterest(float value)
     {
         this.bankDepositBalanceInterest.setInterestValue(value);
-        SendNotificationsForClients("Now we have new deposit balance interest!");
+        sendNotificationsForClients("Now we have new deposit balance interest!");
     }
 
-    public void ChangeBankCommission(float value)
+    public void changeBankCommission(float value)
     {
         this.bankCommission.setCommissionValue(value);
-        SendNotificationsForClients("Now we have new credit commission!");
+        sendNotificationsForClients("Now we have new credit commission!");
     }
 
-    public void ChangeBankCreditLimit(float value)
+    public void changeBankCreditLimit(float value)
     {
         this.creditLimit.setLimitValue(value);
-        SendNotificationsForClients("Now we have new credit limit!");
+        sendNotificationsForClients("Now we have new credit limit!");
     }
 
-    public void ChangeBankAccountLimit(float value)
+    public void changeBankAccountLimit(float value)
     {
         this.bankAccountLimit.setLimitValue(value);
-        SendNotificationsForClients("Now we have new limit for your fishy accounts!");
+        sendNotificationsForClients("Now we have new limit for your fishy accounts!");
     }
 
-    public void ChangeDepositAccountDuration(int value)
+    public void changeDepositAccountDuration(int value)
     {
         this.setDepositAccountDuration(value);
-        SendNotificationsForClients("Now we have new limit for your fishy accounts!");
+        sendNotificationsForClients("Now we have new limit for your fishy accounts!");
     }
 
-    public Client AddBankClient(String name, boolean notifications, String address, int passportId)
+    public Client addBankClient(Client client)
     {
-        var client = new Client(name, notifications, address, passportId);
         bankClients.add(client);
         return client;
     }
 
-    public DebitAccountImpl AddDebitAccountForClient(Client client)
+    public DebitAccountImpl addDebitAccountForClient(Client client)
     {
         var clientAccount = new DebitAccountImpl(_lastAccountId++, client, bankBalanceInterest, bankCommission, bankAccountLimit);
         accounts.add(clientAccount);
         return clientAccount;
     }
 
-    public DepositAccountImpl AddDepositAccountForClient(Client client, float startMoney) throws BanksException {
+    public DepositAccountImpl addDepositAccountForClient(Client client, float startMoney) throws BanksException {
         var clientAccount = new DepositAccountImpl(_lastAccountId++, client, bankDepositBalanceInterest, bankCommission, bankAccountLimit, LocalDate.now().plusMonths(depositAccountDuration), startMoney);
         accounts.add(clientAccount);
         return clientAccount;
     }
 
-    public CreditAccountImpl AddCreditAccountForClient(Client client)
+    public CreditAccountImpl addCreditAccountForClient(Client client)
     {
         var clientAccount = new CreditAccountImpl(_lastAccountId++, client, new BalanceInterest(0), bankCommission, bankAccountLimit);
         accounts.add(clientAccount);
         return clientAccount;
     }
 
-    public void AddAccountInterests()
+    public void addAccountInterests()
     {
         for (BaseBankAccountImpl account : accounts)
         {
@@ -220,15 +219,15 @@ public class SimpleBank
         }
     }
 
-    public void AddAccountInterestOnAccount() throws BanksException {
+    public void addAccountInterestOnAccount() throws BanksException {
         for (BaseBankAccountImpl account : accounts)
         {
-            account.AddMoneyToAccount(account.getBalanceInterestPerMonth());
+            account.addMoneyToAccount(account.getBalanceInterestPerMonth());
             account.setBalanceInterestPerMonth(0);
         }
     }
 
-    private BaseBankAccountImpl FindAccountById(int accountId) throws BanksException {
+    private BaseBankAccountImpl findAccountById(int accountId) throws BanksException {
         BaseBankAccountImpl account = null;
         for (BaseBankAccountImpl account1 : accounts)
         {

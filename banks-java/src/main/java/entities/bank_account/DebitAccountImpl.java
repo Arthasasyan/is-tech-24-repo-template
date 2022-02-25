@@ -1,10 +1,10 @@
-package Entities.BankAccount;
+package entities.bank_account;
 
-import Entities.BalanceInterest;
-import Entities.BankCommission;
-import Entities.BankLimit;
-import Entities.Client;
-import Tools.BanksException;
+import entities.BalanceInterest;
+import entities.BankCommission;
+import entities.BankLimit;
+import entities.client.Client;
+import tools.BanksException;
 
 public class DebitAccountImpl extends BaseBankAccountImpl {
 

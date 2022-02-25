@@ -1,8 +1,8 @@
-package Entities.BankAccount;
-import Entities.*;
-import Tools.BanksException;
+package entities.bank_account;
+import entities.*;
+import entities.client.Client;
+import tools.BanksException;
 
-import javax.lang.model.type.NullType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class BaseBankAccountImpl implements BankAccount{
         this.commission = commission;
         this.limit = limit;
         this.creationTime = LocalDate.now();
-        List<Transaction> transactionHistory = new ArrayList<>() { };
+        transactionHistory = new ArrayList<>() { };
         this.balanceInterestPerMonth = 0;
     }
     public int getId() {
@@ -103,14 +103,14 @@ public class BaseBankAccountImpl implements BankAccount{
     }
 
     @Override
-    public Transaction AddMoneyToAccount(float money) throws BanksException {
+    public Transaction addMoneyToAccount(float money) throws BanksException {
         var transaction = new Transaction(_lastTransactionId++, this.money, this.money + money);
         this.transactionHistory.add(transaction);
         this.money += money;
         return transaction;
     }
     @Override
-    public Transaction GetMoneyFromAccount(float money) throws BanksException {
+    public Transaction getMoneyFromAccount(float money) throws BanksException {
         var transaction = new Transaction(_lastTransactionId++, this.money, this.money - money);
         this.transactionHistory.add(transaction);
         if (this.bankClient.isFishy() && money > this.limit.getLimitValue())
@@ -119,7 +119,7 @@ public class BaseBankAccountImpl implements BankAccount{
         return transaction;
     }
 
-    public Transaction DeclineTransaction(int id) throws BanksException {
+    public Transaction declineTransaction(int id) throws BanksException {
         Transaction transaction = null;
         for (Transaction trans : this.transactionHistory)
         {
